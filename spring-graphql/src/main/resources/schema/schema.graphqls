@@ -1,0 +1,9 @@
+type Query {
+    members : [Member!]!
+}
+
+type Member {
+    id: ID!
+    name: String!
+    age: Int!
+}
