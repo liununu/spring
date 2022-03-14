@@ -16,4 +16,6 @@ class MembersRepository(
     private val data = objectMapper.readValue<List<Member>>(dummyResource.file)
 
     fun findAll(): Flux<Member> = this.data.toFlux()
+
+    fun findAllWithBlocking() : List<Member> = this.data
 }

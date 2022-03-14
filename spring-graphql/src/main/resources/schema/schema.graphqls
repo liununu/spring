@@ -1,8 +1,9 @@
 type Query {
     members : [Member!]!
+    simplePageableMembers(first: Int!, after: String): MemberConnection!
 }
 
-type Member {
+type Member @connection {
     id: ID!
     name: String!
     age: Int!
