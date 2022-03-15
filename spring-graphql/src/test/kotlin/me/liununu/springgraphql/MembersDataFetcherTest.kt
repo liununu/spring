@@ -1,5 +1,6 @@
 package me.liununu.springgraphql
 
+import com.jayway.jsonpath.TypeRef
 import com.netflix.graphql.dgs.DgsQueryExecutor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -13,6 +14,7 @@ internal class MembersDataFetcherTest {
 
     @Test
     internal fun `should return all members`() {
+        // given
         val query = """
             {
                 members {
@@ -23,12 +25,16 @@ internal class MembersDataFetcherTest {
             }
         """.trimIndent()
 
-        val result = executor.execute(query)
+        // when
+        val result = executor.executeAndExtractJsonPathAsObject(
+            query,
+            """$.data.members""",
+            object : TypeRef<List<Member>>() {}
+        )
 
-        assertThat(result.errors).isEmpty()
-        val data = result.getData<Map<String, List<Member>>>()
-        assertThat(data).containsOnlyKeys("members")
-        val members = data.getValue("members")
-        assertThat(members).hasSize(33)
+        // then
+        assertThat(result).hasSize(33)
+        assertThat(result.first()).isEqualTo(Member("JHN38EVY0ZS", "Carla Cash", 22))
+        assertThat(result.last()).isEqualTo(Member("CWJ73UWO2WR", "Jolie Nixon", 18))
     }
 }
