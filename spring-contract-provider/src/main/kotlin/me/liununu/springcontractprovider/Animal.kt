@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 
 @JsonNaming(SnakeCaseStrategy::class)
 data class Animal(
+    val id: Int,
     val firstName: String,
     val lastName: String,
     val animal: String,

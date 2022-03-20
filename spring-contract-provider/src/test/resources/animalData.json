@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "first_name": "Billy",
     "last_name": "Goat",
     "animal": "goat",
@@ -22,6 +23,7 @@
     ]
   },
   {
+    "id": 2,
     "first_name": "Nanny",
     "animal": "goat",
     "last_name": "Doe",
@@ -43,6 +45,7 @@
     ]
   },
   {
+    "id": 3,
     "first_name": "Simba",
     "last_name": "Cantwaittobeking",
     "animal": "lion",
