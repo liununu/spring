@@ -27,7 +27,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Provider("e2e Provider Example") // This name should match that defined on the consumer side
-@PactBroker(host = "localhost", port = "9292")
+@PactBroker(url = "http://localhost:9292")
 @AutoConfigureWireMock(port = 8979) // This port should match that defined on the remote call
 class ContractVerificationTest {
     @LocalServerPort
