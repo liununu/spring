@@ -39,6 +39,7 @@ class ContractVerificationTest {
     @BeforeEach
     fun before(context: PactVerificationContext) {
         context.target = HttpTestTarget(port = localPort)
+        System.setProperty("pact.verifier.publishResults", "true")
 
         stubFor(
             post("/animals")
