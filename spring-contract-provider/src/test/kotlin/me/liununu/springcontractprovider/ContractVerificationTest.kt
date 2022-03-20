@@ -6,23 +6,59 @@ import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker
 import au.com.dius.pact.provider.spring.junit5.PactVerificationSpringProvider
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.post
+import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
+import org.springframework.core.io.Resource
+import org.springframework.http.HttpHeaders.CONTENT_TYPE
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Provider("e2e Provider Example") // This name should match that defined on the consumer side
 @PactBroker(host = "localhost", port = "9292")
+@AutoConfigureWireMock(port = 8979) // This port should match that defined on the remote call
 class ContractVerificationTest {
     @LocalServerPort
     private var localPort: Int = 0
 
+    @Value("classpath:animalData.json")
+    private lateinit var mockAnimalData: Resource
+
+    @Autowired
+    private lateinit var objectMapper: ObjectMapper
+
     @BeforeEach
     fun before(context: PactVerificationContext) {
         context.target = HttpTestTarget(port = localPort)
+
+        stubFor(
+            get("/animals")
+                .willReturn(
+                    aResponse()
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .withBody(mockAnimalData.file.readText())
+                )
+        )
+
+        stubFor(
+            post("/animals")
+                .willReturn(
+                    aResponse()
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .withBody(objectMapper.readTree(mockAnimalData.file).last().toString())
+                )
+        )
     }
 
     @TestTemplate
