@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.post
+import com.github.tomakehurst.wiremock.client.WireMock.removeAllMappings
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
 import org.junit.jupiter.api.extension.ExtendWith
@@ -43,15 +45,6 @@ class ContractVerificationTest {
         context.target = HttpTestTarget(port = localPort)
 
         stubFor(
-            get("/animals")
-                .willReturn(
-                    aResponse()
-                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                        .withBody(mockAnimalData.file.readText())
-                )
-        )
-
-        stubFor(
             post("/animals")
                 .willReturn(
                     aResponse()
@@ -59,6 +52,11 @@ class ContractVerificationTest {
                         .withBody(objectMapper.readTree(mockAnimalData.file).last().toString())
                 )
         )
+    }
+
+    @AfterEach
+    fun tearDown() {
+        removeAllMappings()
     }
 
     @TestTemplate
@@ -71,15 +69,15 @@ class ContractVerificationTest {
     fun `is not authenticated`() {
     }
 
-    @State("Has some animals")
-    fun `Has some animals`() {
-    }
-
-    @State("Has an animal with ID 1")
-    fun `Has an animal with ID 1`() {
-    }
-
-    @State("Has no animals")
-    fun `Has no animals`() {
+    @State(value = ["Has some animals", "Has an animal with ID 1", "Has no animals"])
+    fun `has animals states`() {
+        stubFor(
+            get("/animals")
+                .willReturn(
+                    aResponse()
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .withBody(mockAnimalData.file.readText())
+                )
+        )
     }
 }
