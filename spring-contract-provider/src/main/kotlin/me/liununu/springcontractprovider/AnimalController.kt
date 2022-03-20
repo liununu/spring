@@ -43,9 +43,7 @@ class AnimalController(private val restTemplate: RestTemplate) {
     fun create(
         @RequestHeader(value = AUTHORIZATION, required = false) authorization: String?,
         @RequestBody animal: Animal,
-    ) = restTemplate.postForObject(ANIMALS_URL, animal, Animal::class.java)
-        ?.let { ResponseEntity.ok(it) }
-        ?: ResponseEntity.badRequest().build()
+    ) = restTemplate.postForLocation(ANIMALS_URL, animal).let { ResponseEntity.ok(animal) }
 
     // Simply verify the authorization header
     private fun <T> authorizedExecution(authorization: String?, executor: () -> T): ResponseEntity<T> {

@@ -6,7 +6,6 @@ import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker
 import au.com.dius.pact.provider.spring.junit5.PactVerificationSpringProvider
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.post
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -24,6 +22,7 @@ import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -37,9 +36,6 @@ class ContractVerificationTest {
     @Value("classpath:animalData.json")
     private lateinit var mockAnimalData: Resource
 
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
-
     @BeforeEach
     fun before(context: PactVerificationContext) {
         context.target = HttpTestTarget(port = localPort)
@@ -49,7 +45,7 @@ class ContractVerificationTest {
                 .willReturn(
                     aResponse()
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                        .withBody(objectMapper.readTree(mockAnimalData.file).last().toString())
+                        .withStatus(CREATED.value())
                 )
         )
     }
