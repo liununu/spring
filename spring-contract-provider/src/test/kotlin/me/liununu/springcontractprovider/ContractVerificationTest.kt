@@ -3,6 +3,7 @@ package me.liununu.springcontractprovider
 import au.com.dius.pact.provider.junit5.HttpTestTarget
 import au.com.dius.pact.provider.junit5.PactVerificationContext
 import au.com.dius.pact.provider.junitsupport.Provider
+import au.com.dius.pact.provider.junitsupport.State
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker
 import au.com.dius.pact.provider.spring.junit5.PactVerificationSpringProvider
 import org.junit.jupiter.api.BeforeEach
@@ -28,5 +29,21 @@ class ContractVerificationTest {
     @ExtendWith(PactVerificationSpringProvider::class)
     fun pactVerificationTestTemplate(context: PactVerificationContext) {
         context.verifyInteraction()
+    }
+
+    @State("is not authenticated")
+    fun `is not authenticated`() {
+    }
+
+    @State("Has some animals")
+    fun `Has some animals`() {
+    }
+
+    @State("Has an animal with ID 1")
+    fun `Has an animal with ID 1`() {
+    }
+
+    @State("Has no animals")
+    fun `Has no animals`() {
     }
 }
