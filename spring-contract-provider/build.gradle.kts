@@ -25,7 +25,7 @@ dependencies {
 
     testImplementation("au.com.dius.pact.provider:junit5spring:4.3.5")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
 }
 
 dependencyManagement {
