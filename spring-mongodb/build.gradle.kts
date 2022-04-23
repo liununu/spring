@@ -40,5 +40,9 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<Test> {
+    environment(
+        "DOCKER_HOST" to "unix://${environment["HOME"]}/.colima/docker.sock",
+        "TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE" to "/var/run/docker.sock"
+    )
     useJUnitPlatform()
 }
