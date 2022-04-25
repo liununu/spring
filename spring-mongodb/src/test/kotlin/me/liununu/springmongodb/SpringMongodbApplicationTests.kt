@@ -52,6 +52,7 @@ class SpringMongodbApplicationTests {
 
         assertThat(person).isNotNull
         assertThat(person!!.id).isNotEmpty
+        assertThat(person.pid).isEqualTo("bfa55331-bb69-4f43-8d2c-a742c3cf2ac0")
         assertThat(person.firstName).isEqualTo("Dennison")
         assertThat(person.lastName).isEqualTo("Lamacraft")
         assertThat(person.email).isEqualTo(email)
