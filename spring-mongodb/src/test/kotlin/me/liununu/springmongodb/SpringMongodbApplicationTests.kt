@@ -43,4 +43,26 @@ class SpringMongodbApplicationTests {
         assertThat(container.isRunning).isTrue
         assertThat(repository.count()).isEqualTo(10)
     }
+
+    @Test
+    internal fun shouldFindPersonWithEmail() {
+        val email = "dlamacraft3@google.nl"
+
+        val person = repository.findByEmail(email)
+
+        assertThat(person).isNotNull
+        assertThat(person!!.id).isNotEmpty
+        assertThat(person.firstName).isEqualTo("Dennison")
+        assertThat(person.lastName).isEqualTo("Lamacraft")
+        assertThat(person.email).isEqualTo(email)
+    }
+
+    @Test
+    internal fun shouldNotFindPersonWithEmail() {
+        val email = "non-existent-person@google.com"
+
+        val person = repository.findByEmail(email)
+
+        assertThat(person).isNull()
+    }
 }
