@@ -1,6 +1,7 @@
 package me.liununu.springmongodb
 
 import me.liununu.springmongodb.repository.AddressRepository
+import me.liununu.springmongodb.repository.BasicPersonRepository
 import me.liununu.springmongodb.repository.PersonRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -23,6 +24,9 @@ class SpringMongodbApplicationTests {
 
     @Autowired
     private lateinit var addressRepository: AddressRepository
+
+    @Autowired
+    private lateinit var basicPersonRepository: BasicPersonRepository
 
     companion object {
         @Container
@@ -97,5 +101,15 @@ class SpringMongodbApplicationTests {
         assertThat(secondAddress.country).isEqualTo(country)
         assertThat(secondAddress.street).isEqualTo("5 5th Alley")
         assertThat(secondAddress.postalCode).isNull()
+    }
+
+    @Test
+    internal fun shouldFindPersonFullNameWithFullAddress() {
+        val personId = "2035bf06-a79d-46ce-8f80-64295ac2f8ef"
+
+        val basicPerson = basicPersonRepository.findFullNameWithFullAddressByPersonId(personId)
+
+        assertThat(basicPerson?.fullName).isEqualTo("Kellyann MacNamee")
+        assertThat(basicPerson?.fullAddress).isEqualTo("France, 862 Logan Hill, 48005 CEDEX")
     }
 }
