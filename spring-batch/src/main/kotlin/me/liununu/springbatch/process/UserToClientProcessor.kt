@@ -9,7 +9,6 @@ import java.time.ZoneId
 class UserToClientProcessor : ItemProcessor<User, Client> {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
-    private val utc = ZoneId.of("UTC")
     private val hkZone = ZoneId.of("Asia/Hong_Kong")
 
     override fun process(item: User) =
@@ -22,7 +21,7 @@ class UserToClientProcessor : ItemProcessor<User, Client> {
                 gender = Client.Gender.valueOf(gender.name),
                 remark = remark,
                 ipAddress = ipAddress,
-                createdAt = createdAt.atZone(utc).withZoneSameInstant(hkZone),
+                createdAt = createdAt.withZoneSameInstant(hkZone),
             )
         }
 }

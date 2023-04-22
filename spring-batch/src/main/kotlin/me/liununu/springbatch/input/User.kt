@@ -1,6 +1,6 @@
 package me.liununu.springbatch.input
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 data class User(
     val id: Int,
@@ -10,7 +10,7 @@ data class User(
     val gender: Gender,
     val remark: String,
     val ipAddress: String,
-    val createdAt: LocalDateTime,
+    val createdAt: ZonedDateTime,
 ) {
     enum class Gender {
         FEMALE,

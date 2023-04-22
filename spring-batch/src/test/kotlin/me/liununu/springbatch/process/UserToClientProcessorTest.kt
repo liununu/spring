@@ -1,6 +1,7 @@
 package me.liununu.springbatch.process
 
 import me.liununu.springbatch.input.User
+import me.liununu.springbatch.toUTCZonedDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
@@ -18,7 +19,7 @@ class UserToClientProcessorTest {
             gender = User.Gender.FEMALE,
             remark = "Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.",
             ipAddress = "209.92.122.176",
-            createdAt = LocalDateTime.of(2022, 6, 20, 16, 18, 8)
+            createdAt = LocalDateTime.of(2022, 6, 20, 16, 18, 8).toUTCZonedDateTime()
         )
 
         val client = processor.process(item)
