@@ -28,7 +28,7 @@ class ReaderConfigurationTest(@Autowired private val reader: FlatFileItemReader<
             }
         }
 
-        assertThat(users).hasSize(1)
+        assertThat(users).hasSize(100)
             .first()
             .isEqualTo(
                 User(
@@ -40,6 +40,22 @@ class ReaderConfigurationTest(@Autowired private val reader: FlatFileItemReader<
                     remark = "Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.",
                     ipAddress = "209.92.122.176",
                     createdAt = LocalDateTime.of(2022, 6, 20, 16, 18, 8).toUTCZonedDateTime()
+                )
+            )
+        assertThat(users)
+            .last()
+            .isEqualTo(
+                User(
+                    id = 100,
+                    firstName = "Berri",
+                    lastName = "Raubenheimers",
+                    email = "braubenheimers2r@furl.net",
+                    gender = FEMALE,
+                    remark = "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n" +
+                            "\n" +
+                            "Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.",
+                    ipAddress = "247.102.236.27",
+                    createdAt = LocalDateTime.of(2022, 9, 10, 11, 13, 39).toUTCZonedDateTime()
                 )
             )
     }
