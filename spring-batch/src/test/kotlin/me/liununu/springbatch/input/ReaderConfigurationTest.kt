@@ -5,22 +5,28 @@ import me.liununu.springbatch.toUTCZonedDateTime
 import me.liununu.springbatch.use
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.item.file.FlatFileItemReader
 import org.springframework.batch.test.MetaDataInstanceFactory
 import org.springframework.batch.test.StepScopeTestUtils
 import org.springframework.batch.test.context.SpringBatchTest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import java.time.LocalDateTime
 
 
 @SpringBatchTest
+@EnableAutoConfiguration
 @SpringJUnitConfig(ReaderConfiguration::class)
 class ReaderConfigurationTest(@Autowired private val reader: FlatFileItemReader<User>) {
 
     @Test
     fun `should return users when read from csv`() {
-        val stepExecution = MetaDataInstanceFactory.createStepExecution()
+        val stepExecution = JobParametersBuilder()
+            .addString("input.path", "MOCK_DATA.csv")
+            .toJobParameters()
+            .let(MetaDataInstanceFactory::createStepExecution)
 
         val users = StepScopeTestUtils.doInStepScope(stepExecution) {
             reader.use(stepExecution.executionContext) {
