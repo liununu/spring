@@ -1,6 +1,8 @@
 package me.liununu.springbatch.output
 
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import java.time.ZonedDateTime
 
@@ -9,7 +11,7 @@ data class Client(
     @Id val id: Int,
     val name: String,
     val email: String,
-    val gender: Gender,
+    @Enumerated(EnumType.STRING) val gender: Gender,
     val remark: String,
     val ipAddress: String,
     val createdAt: ZonedDateTime,
