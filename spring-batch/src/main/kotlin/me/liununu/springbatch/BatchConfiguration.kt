@@ -2,6 +2,7 @@ package me.liununu.springbatch
 
 import me.liununu.springbatch.input.User
 import me.liununu.springbatch.output.Client
+import me.liununu.springbatch.process.InvalidRemarkException
 import me.liununu.springbatch.process.UserToClientProcessor
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.job.builder.JobBuilder
@@ -38,5 +39,8 @@ class BatchConfiguration {
         .reader(reader)
         .processor(processor)
         .writer(writer)
+        .faultTolerant()
+        .skip(InvalidRemarkException::class.java)
+        .skipLimit(Int.MAX_VALUE)
         .build()
 }

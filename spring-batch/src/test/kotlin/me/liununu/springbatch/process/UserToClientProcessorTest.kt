@@ -3,6 +3,7 @@ package me.liununu.springbatch.process
 import me.liununu.springbatch.input.User
 import me.liununu.springbatch.toUTCZonedDateTime
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -56,4 +57,23 @@ class UserToClientProcessorTest {
 
         assertThat(client).isNull()
     }
+
+    @Test
+    fun `should throw exception when process given remark over 255`() {
+        val item = User(
+            id = 1,
+            firstName = "any",
+            lastName = "any",
+            email = "",
+            gender = User.Gender.FEMALE,
+            remark = "x".repeat(256),
+            ipAddress = "209.92.122.176",
+            createdAt = LocalDateTime.now().toUTCZonedDateTime()
+        )
+
+        assertThatExceptionOfType(InvalidRemarkException::class.java)
+            .isThrownBy { processor.process(item) }
+            .withMessage("Remark violate the 255 length limitation")
+    }
+
 }

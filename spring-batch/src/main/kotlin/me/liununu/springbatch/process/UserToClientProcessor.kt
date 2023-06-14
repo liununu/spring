@@ -11,21 +11,35 @@ class UserToClientProcessor : ItemProcessor<User, Client> {
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val hkZone = ZoneId.of("Asia/Hong_Kong")
 
-    override fun process(item: User) =
-        with(item) {
-            logger.info("Process User($id)...")
-            if (id > 50) {
-                logger.info("Filter out User($id)...")
-                return@with null
-            }
-            Client(
-                id = id,
-                name = "$firstName $lastName",
-                email = email,
-                gender = Client.Gender.valueOf(gender.name),
-                remark = remark,
-                ipAddress = ipAddress,
-                createdAt = createdAt.withZoneSameInstant(hkZone),
-            )
+    override fun process(item: User): Client? {
+        val id = item.id
+        logger.info("Process User($id)...")
+        filterId(id) ?: return null
+        remarkValidation(item)
+        return Client(
+            id = id,
+            name = "${item.firstName} ${item.lastName}",
+            email = item.email,
+            gender = Client.Gender.valueOf(item.gender.name),
+            remark = item.remark,
+            ipAddress = item.ipAddress,
+            createdAt = item.createdAt.withZoneSameInstant(hkZone),
+        )
+    }
+
+    private fun filterId(id: Int): Unit? {
+        if (id > 50) {
+            logger.info("Filter out User($id)...")
+            return null
         }
+        return Unit
+    }
+
+    private fun remarkValidation(user: User) {
+        val remarkLength = user.remark.length
+        if (remarkLength > 255) {
+            logger.info("Invalid User(${user.id}) with remark length($remarkLength)...")
+            throw InvalidRemarkException
+        }
+    }
 }

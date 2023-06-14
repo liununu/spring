@@ -9,7 +9,7 @@ data class Client(
     val name: String,
     val email: String,
     @Enumerated(EnumType.STRING) val gender: Gender,
-    @Column(length = 2000) val remark: String,
+    val remark: String,
     val ipAddress: String,
     val createdAt: ZonedDateTime,
 ) {

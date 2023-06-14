@@ -28,10 +28,12 @@ class SpringBatchApplicationTests(
         val execution = jobLauncherTestUtils.launchJob(parameters)
 
         val clients = repository.findAll()
-        assertThat(clients).hasSize(50)
+        assertThat(clients).hasSize(25)
         assertThat(clients.maxOf(Client::id)).isEqualTo(50)
         assertThat(execution.exitStatus.exitCode).isEqualTo("COMPLETED")
-        assertThat(execution.stepExecutions.first().filterCount).isEqualTo(50)
+        val stepExecution = execution.stepExecutions.first()
+        assertThat(stepExecution.filterCount).isEqualTo(50)
+        assertThat(stepExecution.skipCount).isEqualTo(25)
     }
 
 }
