@@ -14,6 +14,10 @@ class UserToClientProcessor : ItemProcessor<User, Client> {
     override fun process(item: User) =
         with(item) {
             logger.info("Process User($id)...")
+            if (id > 50) {
+                logger.info("Filter out User($id)...")
+                return@with null
+            }
             Client(
                 id = id,
                 name = "$firstName $lastName",

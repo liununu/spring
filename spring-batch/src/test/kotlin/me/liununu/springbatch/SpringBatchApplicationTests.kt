@@ -1,5 +1,6 @@
 package me.liununu.springbatch
 
+import me.liununu.springbatch.output.Client
 import me.liununu.springbatch.output.ClientRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -26,9 +27,11 @@ class SpringBatchApplicationTests(
 
         val execution = jobLauncherTestUtils.launchJob(parameters)
 
-        val count = repository.count()
-        assertThat(count).isEqualTo(100)
+        val clients = repository.findAll()
+        assertThat(clients).hasSize(50)
+        assertThat(clients.maxOf(Client::id)).isEqualTo(50)
         assertThat(execution.exitStatus.exitCode).isEqualTo("COMPLETED")
+        assertThat(execution.stepExecutions.first().filterCount).isEqualTo(50)
     }
 
 }

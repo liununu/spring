@@ -8,9 +8,10 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 class UserToClientProcessorTest {
+    private val processor = UserToClientProcessor()
+
     @Test
     fun `should map user to client`() {
-        val processor = UserToClientProcessor()
         val item = User(
             id = 1,
             firstName = "Lisetta",
@@ -22,7 +23,7 @@ class UserToClientProcessorTest {
             createdAt = LocalDateTime.of(2022, 6, 20, 16, 18, 8).toUTCZonedDateTime()
         )
 
-        val client = processor.process(item)
+        val client = processor.process(item)!!
 
         assertThat(client.id).isEqualTo(item.id)
         assertThat(client.name).isEqualTo(item.firstName + " " + item.lastName)
@@ -36,5 +37,23 @@ class UserToClientProcessorTest {
             assertThat(minute).isEqualTo(18)
             assertThat(second).isEqualTo(8)
         }
+    }
+
+    @Test
+    fun `should return null when process given user id over 50`() {
+        val item = User(
+            id = 51,
+            firstName = "any",
+            lastName = "any",
+            email = "",
+            gender = User.Gender.FEMALE,
+            remark = "any",
+            ipAddress = "209.92.122.176",
+            createdAt = LocalDateTime.now().toUTCZonedDateTime()
+        )
+
+        val client = processor.process(item)
+
+        assertThat(client).isNull()
     }
 }
