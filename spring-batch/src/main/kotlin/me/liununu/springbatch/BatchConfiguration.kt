@@ -21,6 +21,7 @@ class BatchConfiguration {
     fun importUserJob(jobRepository: JobRepository, step: Step) =
         JobBuilder("importUserJob", jobRepository)
             .incrementer(RunIdIncrementer())
+            .listener(JobListener())
             .flow(step)
             .end()
             .build()
