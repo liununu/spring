@@ -1,7 +1,6 @@
-package me.liununu.springdata.query.finder.impl
+package me.liununu.springdata.query.finder
 
 import me.liununu.springdata.query.Assignment
-import me.liununu.springdata.query.finder.AssignmentsFinder
 import org.springframework.stereotype.Component
 
 @Component
