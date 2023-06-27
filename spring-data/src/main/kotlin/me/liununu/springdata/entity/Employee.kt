@@ -10,6 +10,6 @@ data class Employee(
     val id: String,
     val name: String,
     val email: String,
-    val projectId: String?,
+    val projectName: String?,
     val active: Boolean,
 )

@@ -29,10 +29,10 @@ class JPACriteriaFinder(private val entityManager: EntityManager) : AssignmentsF
             projectRoot.get<LocalDate>(Project::endDate.name),
         ).where(
             criteriaBuilder.equal(
-                employeeRoot.get<String>(Employee::projectId.name),
-                projectRoot.get<String>(Project::id.name)
+                employeeRoot.get<String>(Employee::projectName.name),
+                projectRoot.get<String>(Project::name.name)
             ),
-            criteriaBuilder.isNotNull(employeeRoot.get<String>(Employee::projectId.name))
+            criteriaBuilder.isNotNull(employeeRoot.get<String>(Employee::projectName.name))
         )
             .let { entityManager.createQuery(it) }
             .resultList
