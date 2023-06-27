@@ -39,8 +39,8 @@ class AssignmentsQueryTest(@Autowired private val query: AssignmentsQuery) {
                 employeeName = "Diego Idell",
                 employeeEmail = "didell18@hubpages.com",
                 projectName = "Farrell, Thompson and Cronin",
-                projectStartDate = LocalDate.of(2022, 10, 29),
-                projectEndDate = null
+                projectStartDate = LocalDate.of(2022, 3, 29),
+                projectEndDate = LocalDate.of(2023, 9, 14)
             )
         )
     }
