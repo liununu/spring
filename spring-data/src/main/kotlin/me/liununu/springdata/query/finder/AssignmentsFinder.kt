@@ -11,5 +11,6 @@ sealed interface AssignmentsFinder {
     enum class Name {
         NOOP,
         NOT_IMPLEMENTED,
+        JPA_CRITERIA,
     }
 }
